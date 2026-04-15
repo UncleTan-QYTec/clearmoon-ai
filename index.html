@@ -7,6 +7,20 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+    <script>
+      // GitHub Pages SPA 路由恢复：从 404.html 重定向后恢复原始路径
+      (function() {
+        var redirectPath = sessionStorage.getItem('redirectPath');
+        if (redirectPath && redirectPath !== window.location.pathname) {
+          // 清理 sessionStorage 并使用 replaceState 更新 URL，不触发刷新
+          sessionStorage.removeItem('redirectPath');
+          var basePath = '/clearmoon-ai';
+          if (redirectPath.startsWith(basePath)) {
+            history.replaceState(null, '', redirectPath);
+          }
+        }
+      })();
+    </script>
     <script type="module" crossorigin src="./assets/index-GDXgP-AI.js?v=1"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CBO3mvCz.css?v=1">
   </head>
