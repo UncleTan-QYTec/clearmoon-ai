@@ -23,6 +23,111 @@
     </script>
     <script type="module" crossorigin src="./assets/index-GDXgP-AI.js?v=1"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CBO3mvCz.css?v=1">
+    <style>
+      /* ===== 顶部导航栏选中效果 ===== */
+      .nav-link-active {
+        background-color: rgba(99, 102, 241, 0.1) !important;
+        color: #6366f1 !important;
+        border-radius: 9999px !important;
+        padding: 6px 12px !important;
+      }
+      
+      /* ===== 图像生成页面风格调整 ===== */
+      .image-gen-page main {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: calc(100vh - 80px);
+      }
+      
+      .image-gen-page .tool-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      /* ===== 对话页面风格调整 ===== */
+      .chat-page main {
+        background: #f8fafc;
+      }
+      
+      .chat-page .message-bubble {
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+      
+      .chat-page .user-message {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+      }
+      
+      .chat-page .ai-message {
+        background: white;
+        border: 1px solid #e2e8f0;
+      }
+    </style>
+    <script>
+      // 顶部导航栏 active 状态管理
+      (function() {
+        function updateNavActive() {
+          const path = window.location.pathname;
+          const navLinks = document.querySelectorAll('nav a[href]');
+          
+          navLinks.forEach(function(link) {
+            const href = link.getAttribute('href');
+            link.classList.remove('nav-link-active');
+            
+            // 检查是否匹配当前路径
+            if (href === path || 
+                (href !== '/' && path.startsWith(href + '/')) ||
+                (href === '/' && path === '/clearmoon-ai')) {
+              link.classList.add('nav-link-active');
+            }
+          });
+        }
+        
+        // 页面加载时更新
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', updateNavActive);
+        } else {
+          // 使用 MutationObserver 等待 React 渲染完成
+          var observer = new MutationObserver(function() {
+            updateNavActive();
+          });
+          observer.observe(document.body, { childList: true, subtree: true });
+          
+          // 延迟执行确保 React 已渲染
+          setTimeout(updateNavActive, 500);
+          setTimeout(updateNavActive, 1000);
+          setTimeout(updateNavActive, 2000);
+        }
+        
+        // 监听路由变化
+        window.addEventListener('popstate', updateNavActive);
+        window.addEventListener('pushstate', updateNavActive);
+        window.addEventListener('replacestate', updateNavActive);
+      })();
+      
+      // 页面风格标记
+      (function() {
+        function markPageStyle() {
+          const path = window.location.pathname;
+          document.body.classList.remove('image-gen-page', 'chat-page', 'home-page');
+          
+          if (path.includes('/image-gen')) {
+            document.body.classList.add('image-gen-page');
+          } else if (path.includes('/chat')) {
+            document.body.classList.add('chat-page');
+          } else if (path === '/clearmoon-ai' || path === '/') {
+            document.body.classList.add('home-page');
+          }
+        }
+        
+        setTimeout(markPageStyle, 500);
+        setTimeout(markPageStyle, 1000);
+        setTimeout(markPageStyle, 2000);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
